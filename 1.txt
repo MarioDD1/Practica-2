@@ -1,0 +1,58 @@
+using System;
+
+class Program
+{
+    //функция для вычисления факториала
+    static double Factorial(int n)
+    {
+        double result = 1;
+        for (int i = 2; i <= n; i++)
+            result *= i;
+        return result;
+    }
+    //вычисление n-го члена ряда cosh(x)
+    static double CoshSeriesTerm(int n, double x)
+    {
+        int power = 2 * n;
+        return Math.Pow(x, power) / Factorial(power);
+    }
+    static double CalculateCosh(double x, double epsilon)
+    {
+        double sum = 0;
+        int n = 0;
+        double term;
+
+        do
+        {
+            term = CoshSeriesTerm(n, x);
+            sum += term;
+            n++;
+        } while (Math.Abs(term) >= epsilon);
+
+        return sum;
+    }
+    static void Main()
+    {
+        Console.WriteLine("Введите x:");
+        double x = double.Parse(Console.ReadLine());
+
+        Console.WriteLine("Введите точность ε (ε < 0.01):");
+        double epsilon = double.Parse(Console.ReadLine());
+        if (epsilon >= 0.01 || epsilon <= 0)
+        {
+            Console.WriteLine("Ошибка: ε должно быть положительным и меньше 0.01");
+            return;
+        }
+        //вычисление значения функции с заданной точностью
+        double coshValue = CalculateCosh(x, epsilon);
+        Console.WriteLine($"Значение cosh({x}) с точностью ε = {epsilon}: {coshValue}");
+        Console.WriteLine("Введите номер члена n (целое неотрицательное число):");
+        if (!int.TryParse(Console.ReadLine(), out int n) || n < 0)
+        {
+            Console.WriteLine("Ошибка: n должно быть целым неотрицательным числом.");
+            return;
+        }
+        double nthTerm = CoshSeriesTerm(n, x);
+        Console.WriteLine($"Значение {n}-го члена ряда cosh({x}): {nthTerm}");
+    }
+}
