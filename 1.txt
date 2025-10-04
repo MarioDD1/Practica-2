@@ -56,3 +56,4 @@ class Program
         Console.WriteLine($"Значение {n}-го члена ряда cosh({x}): {nthTerm}");
     }
 }
+
